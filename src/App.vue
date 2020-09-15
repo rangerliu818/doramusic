@@ -1,12 +1,30 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <Player style="z-index:400"></Player>
+    <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+      <router-link to="/recommend">About</router-link>
+    </div> -->
     <router-view/>
+    <Nav></Nav>
   </div>
 </template>
+
+<script>
+import Player from './views/player/player'
+import Nav from './views/nav/nav'
+import './assets/style/reset.css'
+export default {
+  data () {
+    return {
+    }
+  },
+  components: {
+    Player,
+    Nav
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
@@ -15,6 +33,8 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  width: 100vw;
+  height: 100vh;
 }
 
 #nav {
