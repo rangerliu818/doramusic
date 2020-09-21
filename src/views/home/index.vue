@@ -2,7 +2,7 @@
 <div class="home-container">
   <div v-show="isLogin" class="home-all">
       <div class="home-user">
-          <div class="user-views">
+          <div class="user-views" v-if="userInfo.profile">
               <img class="user-avator" :src='userInfo.profile.avatarUrl'>
               <div class="user-name">
                  <div class="name">{{userInfo.profile.nickname}}</div>
@@ -113,6 +113,9 @@ export default {
                 }
               })
           }
+        }).catch(() => {
+          console.log(this.isLogin)
+          this.isLogin = false
         })
     },
     goSongList (id) {
@@ -251,6 +254,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     height: 100vh;
+    padding: 0 2rem;
   }
 }
 </style>
