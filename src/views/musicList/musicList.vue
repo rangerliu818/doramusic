@@ -1,8 +1,9 @@
 <template>
   <div>
-      <div>
-          <i></i>
-          <div>歌单广场</div>
+      <div class="list-title">
+          <div @click="goBack"><i class="iconfont icon-fanhui"></i></div>
+          <div class="title">歌单广场</div>
+          <div></div>
       </div>
       <nav>
           <van-tabs sticky swipeable animated @change="_getMusicList">
@@ -62,6 +63,13 @@ export default {
       })
       // console.log(item)
       // this.setMuiscList(item)
+    },
+    goBack () {
+      this.$nextTick(() => {
+        this.$router.push({
+          path: '/recommend'
+        })
+      })
     }
   },
   created () {
@@ -71,12 +79,22 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import url('../../assets/icon/player/player-icon.css');
+    .list-title{
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 0.5rem;
+      .title{
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+    }
     .music-list {
       padding-top: 0.7rem;
       display: flex;
       flex-wrap: wrap;
       .list-item{
-        width: 33%;
+        width: 32%;
         position: relative;
         .item-count{
           position: absolute;

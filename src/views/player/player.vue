@@ -32,6 +32,7 @@
             </div>
             <div class="player-menu">
                 <div class="menu-progress">
+                  <Bar :allTime="currentSong.dt" :playTime="playTime" :width="progressWidth" @time="changeTime"></Bar>
                 </div>
                 <div class="menu2">
                   <div class="music-playway">
@@ -46,7 +47,7 @@
                   <div class="music-next" @click="nextSong">
                       <i class="iconfont icon-xiayishouxianxing"></i>
                   </div>
-                  <div class="music-list">
+                  <div class="music-list" @click="show = true">
                       <i class="iconfont icon-iconsMusicyemianbofangmoshiPlayList"></i>
                   </div>
                 </div>
@@ -58,7 +59,7 @@
           <img class="img-mini" />
         </div>
       </transition>
-      <audio class="audio" :src='nowSong.url' @ended="nextSong" autoplay></audio>
+      <audio class="audio" :src='nowSong.url' @ended="nextSong" @timeupdate="setTime" autoplay></audio>
      <!-- <audio id="music-audio" ref="audio" @ended="end" autoplay @canplay="ready" @error="error" @timeupdate="updateTime"></audio> -->
   </div>
 </template>
@@ -66,12 +67,16 @@
 <script>
 import { mapGetters } from 'vuex'
 import api from '../../api/index'
+import Bar from './bar'
 export default {
   data () {
     return {
+      show: false,
       currentSong: {},
       currentIndex: -1,
-      author: '歌手'
+      author: '歌手',
+      progressWidth: 0,
+      playTime: '00:00'
     }
   },
   created () {
@@ -182,7 +187,29 @@ export default {
             this.$store.commit('SET_NOW_SONG', nowSong)
           }
         })
+    },
+    changeTime (time) {
+      const audio = document.querySelector('.audio')
+      const current = time * audio.duration / 100
+      audio.currentTime = current
+    },
+    setTime () {
+      // 首先我们计算到当前的播放时间
+      const audio = document.querySelector('.audio')
+      const minutes = Math.floor(audio.currentTime / 60)
+      const seconds = Math.floor(audio.currentTime - minutes * 60)
+      const minuteValue = minutes < 10 ? '0' + minutes : minutes
+      const secondValue = seconds < 10 ? '0' + seconds : seconds
+      // 进行时间值拼接，展示到页面
+      const audioTime = minuteValue + ':' + secondValue
+      this.playTime = audioTime
+      // // 进度条的长度计算
+      const barLength = audio.currentTime / audio.duration * 100
+      this.progressWidth = barLength
     }
+  },
+  components: {
+    Bar
   }
 }
 </script>
